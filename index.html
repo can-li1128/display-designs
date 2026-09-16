@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Digital Book Display Designs: a collection of accessible, responsive digital book display projects.">
+  <title>Digital Book Display Designs</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-title" href="./" aria-label="Digital Book Display Designs home">
+        Digital Book Display Designs
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="nav-toggle__label">Menu</span>
+      </button>
+
+      <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="https://github.com/YOUR-USERNAME">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero__inner">
+        <p class="eyebrow">Accessible web design for library discovery</p>
+        <h1 id="page-title">Digital Book Display Designs</h1>
+        <p class="hero__lede">
+          A collection of responsive digital book display experiments and reusable interface patterns for libraries.
+          Each project focuses on clear presentation, accessibility, and lightweight front-end code.
+        </p>
+      </div>
+    </section>
+
+    <section id="projects" class="projects-section" aria-labelledby="projects-heading">
+      <div class="section-heading">
+        <p class="eyebrow">Selected work</p>
+        <h2 id="projects-heading">Projects</h2>
+      </div>
+
+      <div class="project-list">
+        <article class="project">
+          <div class="project__content">
+            <p class="project__number" aria-hidden="true">01</p>
+            <h3>Featured Books Carousel</h3>
+            <p>
+              A responsive display for highlighting selected titles in a compact horizontal carousel. The design gives book covers strong visual priority while keeping titles, authors, and actions readable at smaller screen sizes.
+            </p>
+            <div class="project__links">
+              <a class="button" href="https://github.com/YOUR-USERNAME/featured-books-carousel">View GitHub code</a>
+              <a class="text-link" href="https://YOUR-USERNAME.github.io/featured-books-carousel/">View live design <span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+
+          <figure class="project__preview">
+            <div class="preview-frame">
+              <img src="images/featured-books-carousel.png" alt="Screenshot of the Featured Books Carousel design showing book covers arranged in a horizontal row.">
+            </div>
+            <figcaption>Featured Books Carousel</figcaption>
+          </figure>
+        </article>
+
+        <article class="project">
+          <div class="project__content">
+            <p class="project__number" aria-hidden="true">02</p>
+            <h3>New Books Grid</h3>
+            <p>
+              A flexible grid for displaying recently acquired books. The layout adapts from a single column on phones to multiple columns on wider screens while preserving consistent spacing and readable metadata.
+            </p>
+            <div class="project__links">
+              <a class="button" href="https://github.com/YOUR-USERNAME/new-books-grid">View GitHub code</a>
+              <a class="text-link" href="https://YOUR-USERNAME.github.io/new-books-grid/">View live design <span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+
+          <figure class="project__preview">
+            <div class="preview-frame">
+              <img src="images/new-books-grid.png" alt="Screenshot of the New Books Grid design with book covers and brief title information arranged in a responsive grid.">
+            </div>
+            <figcaption>New Books Grid</figcaption>
+          </figure>
+        </article>
+
+        <article class="project">
+          <div class="project__content">
+            <p class="project__number" aria-hidden="true">03</p>
+            <h3>Curated Reading List</h3>
+            <p>
+              A narrative-style book display designed for themed collections, exhibits, and reading recommendations. Each title has room for a cover image, contextual description, and direct discovery link.
+            </p>
+            <div class="project__links">
+              <a class="button" href="https://github.com/YOUR-USERNAME/curated-reading-list">View GitHub code</a>
+              <a class="text-link" href="https://YOUR-USERNAME.github.io/curated-reading-list/">View live design <span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+
+          <figure class="project__preview">
+            <div class="preview-frame">
+              <img src="images/curated-reading-list.png" alt="Screenshot of a curated reading list with book covers, descriptive text, and links to individual titles.">
+            </div>
+            <figcaption>Curated Reading List</figcaption>
+          </figure>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="about-section" aria-labelledby="about-heading">
+      <div>
+        <p class="eyebrow">About this collection</p>
+        <h2 id="about-heading">Designed to be reused</h2>
+      </div>
+      <p>
+        These projects use semantic HTML, responsive CSS, visible keyboard focus, sufficient color contrast, and minimal JavaScript. The same visual system can be reused across individual GitHub Pages projects so they feel like parts of one site.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Digital Book Display Designs <span aria-hidden="true">·</span> <span id="year"></span></p>
+    <a href="#main-content">Back to top</a>
+  </footer>
+</body>
+</html>
