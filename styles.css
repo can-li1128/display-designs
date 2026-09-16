@@ -341,3 +341,48 @@ figcaption {
     scroll-behavior: auto !important;
   }
 }
+
+/* Full-width project preview
+   Used when the screenshot should appear below the project description. */
+
+.project__preview--full {
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.project__preview--full .preview-frame {
+    width: 100%;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--border, #d9d9d9);
+    border-radius: 0.5rem;
+}
+
+.project__preview--full .preview-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Interactive preview link */
+
+.project__preview--full figcaption {
+    margin-top: 0.75rem;
+}
+
+.preview-link {
+    display: inline-block;
+    font-weight: 600;
+    color: var(--accent, #442c8b);
+    text-decoration-thickness: 0.1em;
+    text-underline-offset: 0.2em;
+}
+
+.preview-link:hover {
+    text-decoration-thickness: 0.15em;
+}
+
+.preview-link:focus-visible {
+    outline: 3px solid var(--focus, #dcae27);
+    outline-offset: 4px;
+}
