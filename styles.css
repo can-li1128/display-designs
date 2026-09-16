@@ -196,15 +196,19 @@ h3 {
   border-top: 1px solid var(--border);
 }
 
+/* Projects deliberately stay single-column at every screen size.
+   The screenshot sits below the description to preserve its natural proportions. */
 .project {
-  display: grid;
-  gap: 2rem;
-  padding: 3rem 0;
+  display: block;
+  padding: 3rem 0 4rem;
   border-bottom: 1px solid var(--border);
 }
 
+.project__content {
+  max-width: 48rem;
+}
+
 .project__content p:not(.project__number) {
-  max-width: 42rem;
   color: var(--muted);
 }
 
@@ -243,17 +247,14 @@ h3 {
   background: var(--accent-dark);
 }
 
-.text-link {
-  font-weight: 700;
-}
-
 .project__preview {
-  margin: 0;
+  width: 100%;
+  margin: 2.5rem 0 0;
 }
 
 .preview-frame {
   overflow: hidden;
-  min-height: 17rem;
+  width: 100%;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
@@ -262,14 +263,18 @@ h3 {
 
 .preview-frame img {
   width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
+  height: auto;
 }
 
 figcaption {
-  margin-top: 0.65rem;
+  margin-top: 0.8rem;
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+}
+
+.preview-link {
+  display: inline-block;
+  font-weight: 700;
 }
 
 .about-section {
@@ -318,10 +323,7 @@ figcaption {
   }
 
   .project {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    align-items: center;
-    gap: clamp(2.5rem, 6vw, 5.5rem);
-    padding: 4.5rem 0;
+    padding: 4.5rem 0 5rem;
   }
 
   .about-section {
@@ -340,49 +342,4 @@ figcaption {
   *::after {
     scroll-behavior: auto !important;
   }
-}
-
-/* Full-width project preview
-   Used when the screenshot should appear below the project description. */
-
-.project__preview--full {
-    width: 100%;
-    margin-top: 2rem;
-}
-
-.project__preview--full .preview-frame {
-    width: 100%;
-    overflow: hidden;
-    background: #fff;
-    border: 1px solid var(--border, #d9d9d9);
-    border-radius: 0.5rem;
-}
-
-.project__preview--full .preview-frame img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-/* Interactive preview link */
-
-.project__preview--full figcaption {
-    margin-top: 0.75rem;
-}
-
-.preview-link {
-    display: inline-block;
-    font-weight: 600;
-    color: var(--accent, #442c8b);
-    text-decoration-thickness: 0.1em;
-    text-underline-offset: 0.2em;
-}
-
-.preview-link:hover {
-    text-decoration-thickness: 0.15em;
-}
-
-.preview-link:focus-visible {
-    outline: 3px solid var(--focus, #dcae27);
-    outline-offset: 4px;
 }
