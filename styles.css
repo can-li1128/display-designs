@@ -1,16 +1,6 @@
-:root {
-  --bg: #f7f7f5;
-  --surface: #ffffff;
-  --text: #1c1c1c;
-  --muted: #5c6166;
-  --accent: #442c8b;
-  --accent-dark: #31206a;
-  --border: #d9d9d4;
-  --focus: #dcae27;
-  --max-width: 74rem;
-  --radius: 1rem;
-  --shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
-}
+/* ------------------------------
+   Base
+------------------------------ */
 
 * {
   box-sizing: border-box;
@@ -22,324 +12,199 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
-  font-size: 1rem;
+  font-family:
+    "Source Sans 3",
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  color: #222;
+  background: #f7f7f8;
   line-height: 1.6;
 }
 
-img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
 
-a {
-  color: var(--accent);
-  text-underline-offset: 0.2em;
-}
-
-a:hover {
-  text-decoration-thickness: 0.14em;
-}
-
-a:focus-visible,
-button:focus-visible {
-  outline: 3px solid var(--focus);
-  outline-offset: 4px;
-}
-
-.skip-link {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 1000;
-  padding: 0.75rem 1rem;
-  background: var(--text);
-  color: #fff;
-  transform: translateY(-150%);
-}
-
-.skip-link:focus {
-  transform: translateY(0);
-}
+/* ------------------------------
+   Header
+------------------------------ */
 
 .site-header {
-  border-bottom: 1px solid var(--border);
-  background: rgba(247, 247, 245, 0.96);
+  background: #442c8b;
+  color: white;
 }
 
-.site-header__inner,
-.hero__inner,
-.projects-section,
-.about-section,
-.site-footer {
-  width: min(calc(100% - 2rem), var(--max-width));
-  margin-inline: auto;
+.header-inner {
+  width: min(1400px, 92%);
+  margin: 0 auto;
+  padding: 64px 0 58px;
 }
 
-.site-header__inner {
-  position: relative;
-  display: flex;
-  min-height: 4.5rem;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.site-title {
-  color: var(--text);
-  font-size: 1.05rem;
+.site-header h1 {
+  margin: 0 0 12px;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: 1.05;
   font-weight: 700;
-  text-decoration: none;
 }
 
-.nav-toggle {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--text);
-  padding: 0.55rem 0.9rem;
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.site-nav {
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  right: 0;
-  z-index: 10;
-  display: none;
-  min-width: 12rem;
-  padding: 0.6rem;
-  border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-}
-
-.site-nav.is-open {
-  display: grid;
-}
-
-.site-nav a {
-  padding: 0.65rem 0.75rem;
-  border-radius: 0.5rem;
-  color: var(--text);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.site-nav a:hover {
-  background: #efeee9;
-}
-
-.hero {
-  padding: 4.75rem 0 4rem;
-}
-
-.hero__inner {
-  max-width: 62rem;
-}
-
-.eyebrow {
-  margin: 0 0 0.65rem;
-  color: var(--accent);
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-
-h1,
-h2,
-h3 {
-  margin-top: 0;
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-}
-
-h1 {
-  max-width: 11ch;
-  margin-bottom: 1.4rem;
-  font-size: clamp(2.8rem, 9vw, 5.8rem);
-  font-weight: 800;
-}
-
-h2 {
-  font-size: clamp(2rem, 5vw, 3.4rem);
-}
-
-h3 {
-  margin-bottom: 1rem;
-  font-size: clamp(1.65rem, 4vw, 2.5rem);
-}
-
-.hero__lede {
-  max-width: 48rem;
+.site-header p {
+  max-width: 760px;
   margin: 0;
-  color: var(--muted);
-  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+  font-size: 1.15rem;
+  color: #f2effb;
 }
 
-.projects-section {
-  padding: 2rem 0 5rem;
+
+/* ------------------------------
+   Two-column project layout
+------------------------------ */
+
+.project-grid {
+  width: min(1400px, 92%);
+  margin: 50px auto 80px;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px;
 }
 
-.section-heading {
-  margin-bottom: 2rem;
-}
 
-.project-list {
-  border-top: 1px solid var(--border);
-}
+/* ------------------------------
+   Project card
+------------------------------ */
 
-/* Projects deliberately stay single-column at every screen size.
-   The screenshot sits below the description to preserve its natural proportions. */
-.project {
-  display: block;
-  padding: 3rem 0 4rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.project__content {
-  max-width: 48rem;
-}
-
-.project__content p:not(.project__number) {
-  color: var(--muted);
-}
-
-.project__number {
-  margin: 0 0 1.25rem;
-  color: var(--accent);
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-}
-
-.project__links {
+.project-card {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1rem 1.25rem;
-  margin-top: 1.75rem;
-}
+  flex-direction: column;
 
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.9rem;
-  padding: 0.7rem 1rem;
-  border: 2px solid var(--accent);
-  border-radius: 999px;
-  background: var(--accent);
-  color: #fff;
-  font-weight: 750;
-  text-decoration: none;
-}
+  background: white;
+  border: 1px solid #dedee3;
+  border-radius: 8px;
 
-.button:hover {
-  border-color: var(--accent-dark);
-  background: var(--accent-dark);
-}
-
-.project__preview {
-  width: 100%;
-  margin: 2.5rem 0 0;
-}
-
-.preview-frame {
   overflow: hidden;
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  box-shadow: var(--shadow);
+
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.preview-frame img {
+.project-text {
+  padding: 30px 32px 28px;
+}
+
+.project-number {
+  margin: 0 0 5px;
+
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+
+  color: #665aa7;
+}
+
+.project-card h2 {
+  margin: 0 0 15px;
+
+  font-size: 1.65rem;
+  line-height: 1.2;
+}
+
+.project-card p {
+  margin-top: 0;
+}
+
+
+/* ------------------------------
+   Project link
+------------------------------ */
+
+.project-link {
+  display: inline-block;
+
+  margin-top: 8px;
+
+  color: #442c8b;
+  font-weight: 700;
+
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.project-link:hover {
+  color: #044361;
+}
+
+.project-link:focus-visible {
+  outline: 3px solid #dcae27;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+
+/* ------------------------------
+   Screenshots
+------------------------------ */
+
+.project-preview {
+  margin-top: auto;
+  background: #eeeef1;
+  border-top: 1px solid #dedee3;
+}
+
+.project-preview img {
+  display: block;
+
   width: 100%;
   height: auto;
+
+  object-fit: cover;
 }
 
-figcaption {
-  margin-top: 0.8rem;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
 
-.preview-link {
-  display: inline-block;
-  font-weight: 700;
-}
-
-.about-section {
-  display: grid;
-  gap: 1.5rem;
-  padding: 4rem 0;
-  border-top: 1px solid var(--border);
-}
-
-.about-section p:last-child {
-  max-width: 42rem;
-  margin: 0;
-  color: var(--muted);
-}
+/* ------------------------------
+   Footer
+------------------------------ */
 
 .site-footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 2rem 0 3rem;
-  border-top: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 0.95rem;
+  border-top: 1px solid #ddd;
+  background: white;
+
+  padding: 25px 4%;
+
+  text-align: center;
+  color: #555;
 }
 
-.site-footer p {
-  margin: 0;
+
+/* ------------------------------
+   Tablet and mobile
+------------------------------ */
+
+@media (max-width: 850px) {
+
+  .project-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .header-inner {
+    padding: 48px 0;
+  }
+
 }
 
-@media (min-width: 48rem) {
-  .nav-toggle {
-    display: none;
+
+@media (max-width: 520px) {
+
+  .project-grid {
+    width: 94%;
+    margin-top: 28px;
   }
 
-  .site-nav,
-  .site-nav.is-open {
-    position: static;
-    display: flex;
-    min-width: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    gap: 0.25rem;
+  .project-text {
+    padding: 24px;
   }
 
-  .project {
-    padding: 4.5rem 0 5rem;
+  .site-header h1 {
+    font-size: 2.3rem;
   }
 
-  .about-section {
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 4rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-  }
 }
