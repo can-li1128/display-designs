@@ -1,102 +1,165 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Digital Book Display Designs: accessible, responsive digital book display projects for libraries.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Digital Book Display Designs</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="site-header">
-    <div class="site-header__inner">
-      <a class="site-title" href="./" aria-label="Digital Book Display Designs home">
-        Digital Book Display Designs
-      </a>
+    <div class="header-inner">
+      <h1>Digital Book Display Designs</h1>
 
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-        <span class="nav-toggle__label">Menu</span>
-      </button>
-
-      <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
-        <a href="#projects">Projects</a>
-        <a href="#about">About</a>
-        <a href="https://github.com/can-li1128">GitHub</a>
-      </nav>
+      <p>
+        A collection of experimental and reusable designs for presenting
+        library books and digital collections online.
+      </p>
     </div>
   </header>
 
-  <main id="main-content">
-    <section class="hero" aria-labelledby="page-title">
-      <div class="hero__inner">
-        <p class="eyebrow">Accessible web design for library discovery</p>
-        <h1 id="page-title">Digital Book Display Designs</h1>
-        <p class="hero__lede">
-          A collection of responsive digital book display experiments and reusable interface patterns for libraries.
-          Each project focuses on clear presentation, accessibility, and lightweight front-end code.
+
+  <main class="project-grid">
+
+    <!-- Project 1 -->
+    <article class="project-card">
+
+      <div class="project-text">
+        <p class="project-number">01</p>
+
+        <h2>Book Cover Carousel</h2>
+
+        <p>
+          An interactive horizontal carousel for browsing featured books.
+          Designed for library webpages, digital displays, and discovery
+          interfaces.
         </p>
+
+        <a
+          class="project-link"
+          href="https://can-li1128.github.io/bookgallery/"
+          target="_blank"
+          rel="noopener"
+        >
+          Open interactive preview
+        </a>
       </div>
-    </section>
 
-    <section id="projects" class="projects-section" aria-labelledby="projects-heading">
-      <div class="section-heading">
-        <p class="eyebrow">Selected work</p>
-        <h2 id="projects-heading">Projects</h2>
+      <div class="project-preview">
+        <img
+          src="images/project01.png"
+          alt="Screenshot of the Book Cover Carousel design"
+        >
       </div>
 
-      <div class="project-list">
-        <article class="project">
-          <div class="project__content">
-            <p class="project__number" aria-hidden="true">01</p>
-            <h3>New Books Display</h3>
-            <p>
-              A responsive digital book display for showcasing new library acquisitions. The interactive carousel
-              presents book covers and bibliographic information and provides controls for navigating or pausing
-              the display.
-            </p>
+    </article>
 
-            <div class="project__links">
-              <a class="button" href="https://github.com/can-li1128/bookgallery">
-                View GitHub code
-              </a>
-            </div>
-          </div>
 
-          <figure class="project__preview">
-            <div class="preview-frame">
-              <img
-                src="images/project01.png"
-                alt="Preview of the New Books digital book display">
-            </div>
-            <figcaption>
-              <a class="preview-link" href="https://can-li1128.github.io/bookgallery/">
-                Open interactive preview <span aria-hidden="true">→</span>
-              </a>
-            </figcaption>
-          </figure>
-        </article>
+    <!-- Project 2 -->
+    <article class="project-card">
+
+      <div class="project-text">
+        <p class="project-number">02</p>
+
+        <h2>Featured Books Grid</h2>
+
+        <p>
+          A responsive book-display layout using a visual grid of covers.
+          This design works well for themed reading lists and curated
+          collections.
+        </p>
+
+        <a
+          class="project-link"
+          href="#"
+        >
+          Open interactive preview
+        </a>
       </div>
-    </section>
 
-    <section id="about" class="about-section" aria-labelledby="about-heading">
-      <div>
-        <p class="eyebrow">About this collection</p>
-        <h2 id="about-heading">Designed to be reused</h2>
+      <div class="project-preview">
+        <img
+          src="images/project02.png"
+          alt="Screenshot of the Featured Books Grid design"
+        >
       </div>
-      <p>
-        These projects use semantic HTML, responsive CSS, visible keyboard focus, sufficient color contrast,
-        and minimal JavaScript. The same visual system can be reused across individual GitHub Pages projects
-        so they feel like parts of one site.
-      </p>
-    </section>
+
+    </article>
+
+
+    <!-- Project 3 -->
+    <article class="project-card">
+
+      <div class="project-text">
+        <p class="project-number">03</p>
+
+        <h2>Digital Book Shelf</h2>
+
+        <p>
+          A shelf-inspired design that presents books as a browsable digital
+          display while retaining the visual character of a physical library
+          book exhibit.
+        </p>
+
+        <a
+          class="project-link"
+          href="#"
+        >
+          Open interactive preview
+        </a>
+      </div>
+
+      <div class="project-preview">
+        <img
+          src="images/project03.png"
+          alt="Screenshot of the Digital Book Shelf design"
+        >
+      </div>
+
+    </article>
+
+
+    <!-- Project 4 -->
+    <article class="project-card">
+
+      <div class="project-text">
+        <p class="project-number">04</p>
+
+        <h2>Large-Screen Book Display</h2>
+
+        <p>
+          A simplified display designed for large monitors and television
+          screens in library spaces. Book covers remain prominent and readable
+          from a distance.
+        </p>
+
+        <a
+          class="project-link"
+          href="#"
+        >
+          Open interactive preview
+        </a>
+      </div>
+
+      <div class="project-preview">
+        <img
+          src="images/project04.png"
+          alt="Screenshot of the Large-Screen Book Display design"
+        >
+      </div>
+
+    </article>
+
   </main>
 
+
   <footer class="site-footer">
-    <p>Digital Book Display Designs <span aria-hidden="true">·</span> <span id="year"></span></p>
-    <a href="#main-content">Back to top</a>
+    <p>Digital Book Display Designs</p>
   </footer>
+
 </body>
 </html>
