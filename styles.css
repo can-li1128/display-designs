@@ -252,8 +252,12 @@ h3 {
 }
 
 .preview-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  min-height: 17rem;
+  aspect-ratio: 16 / 10;
+  padding: 1rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
@@ -261,9 +265,12 @@ h3 {
 }
 
 .preview-frame img {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 92%;
+  max-height: 92%;
+  object-fit: contain;
 }
 
 figcaption {
