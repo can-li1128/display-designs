@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Syndetics Single Match ISBN Cover Fetcher</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+    }
+    .input-container {
+      margin-bottom: 20px;
+    }
+    textarea {
+      width: 100%;
+      max-width: 500px;
+      height: 90px;
+      padding: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    button {
+      display: block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    #coverDisplay {
+      margin-top: 20px;
+    }
+    .cover-card {
+      border: 1px solid #ccc;
+      padding: 12px;
+      border-radius: 6px;
+      text-align: center;
+      width: 220px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+    .cover-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .isbn-label {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #333;
+    }
+    .error {
+      color: red;
+    }
+    .info {
+      color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Fetch Book Cover (Matches First Available ISBN)</h2>
+
+  <div class="input-container">
+    <label for="isbnInput"><strong>Enter ISBNs for title (separated by semicolons):</strong></label><br><br>
+    <textarea id="isbnInput" placeholder="e.g. 9780387372358; 9780131103627; 9780201633610"></textarea>
+    <button onclick="findFirstCover()">Find Cover</button>
+  </div>
+
+  <div id="status"></div>
+  <div id="coverDisplay"></div>
+
+  <script>
+    // Replace 'primo' with your library's Syndetics client code (e.g., 'bccls') [cite: 118, 124]
+    const CLIENT_CODE = 'primo'; 
+
+    // Helper function to test if an image URL returns a valid image (width > 1px)
+    function checkImageExists(url) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          // Syndetics returns a 1x1 transparent GIF when no cover is found 
+          if (img.naturalWidth > 1 && img.naturalHeight > 1) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        };
+        img.onerror = () => resolve(false);
+        img.src = url;
+      });
+    }
+
+    async function findFirstCover() {
+      const input = document.getElementById('isbnInput').value;
+      const displayContainer = document.getElementById('coverDisplay');
+      const statusContainer = document.getElementById('status');
+      
+      // Clear previous displays
+      displayContainer.innerHTML = '';
+      statusContainer.innerHTML = '';
+
+      if (!input.trim()) {
+        statusContainer.innerHTML = '<span class="error">Please enter at least one ISBN.</span>';
+        return;
+      }
+
+      // Split input by semicolon [cite: 198]
+      const rawIsbnArray = input.split(';');
+      let foundMatch = false;
+
+      statusContainer.innerHTML = '<span class="info">Checking ISBNs for available cover...</span>';
+
+      // Loop through each ISBN in order [cite: 197, 202]
+      for (const rawIsbn of rawIsbnArray) {
+        // Clean individual ISBN [cite: 201]
+        const cleanIsbn = rawIsbn.trim().replace(/[^0-9X]/gi, '');
+
+        if (cleanIsbn.length >= 10) {
+          // Construct Syndetics Large Cover URL [cite: 118, 134]
+          const coverUrl = `https://www.syndetics.com/index.aspx?isbn=${cleanIsbn}/LC.GIF&client=${CLIENT_CODE}&type=xw12`;
+
+          // Test if Syndetics has an actual cover for this ISBN
+          const imageExists = await checkImageExists(coverUrl);
+
+          if (imageExists) {
+            // Display the image card
+            displayContainer.innerHTML = `
+              <div class="cover-card">
+                <img src="${coverUrl}" alt="Cover for ISBN ${cleanIsbn}" />
+                <div class="isbn-label"><strong>Matched ISBN:</strong> ${cleanIsbn}</div>
+              </div>
+            `;
+            statusContainer.innerHTML = '<span class="info" style="color: green;">Cover image found!</span>';
+            foundMatch = true;
+            
+            // EXIT LOOP immediately upon finding a valid image match 
+            break; 
+          }
+        }
+      }
+
+      // If loop finishes without finding any valid cover image
+      if (!foundMatch) {
+        statusContainer.innerHTML = '<span class="error">No cover image was found for any of the provided ISBNs.</span>';
+      }
+    }
+  </script>
+
+</body>
+</html>
