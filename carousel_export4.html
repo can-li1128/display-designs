@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Library 7-Book Cover Carousel</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background-color: #f8f9fa;
+    }
+    .upload-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
+    }
+    #status {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #0056b3;
+    }
+
+    /* Download Button Styling */
+    .download-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 18px;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      transition: background-color 0.2s ease;
+    }
+    .download-btn:hover {
+      background-color: #218838;
+    }
+    
+    /* Carousel Wrapper */
+    .carousel-wrapper {
+      display: none; /* Hidden until covers are loaded */
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      margin: 30px auto;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      padding: 25px 15px;
+      box-sizing: border-box;
+    }
+    
+    /* Track holding all items horizontally */
+    .carousel-track {
+      display: flex;
+      gap: 15px;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    /* Individual book card for 7-item display */
+    .book-card {
+      /* Show exactly 7 items at once (accounting for gap spacing) */
+      flex: 0 0 calc((100% - (15px * 6)) / 7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      padding: 5px;
+    }
+
+    /* Image Styling & Zoom on Hover */
+    .book-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.18);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    /* Enlarge image when hovered */
+    .book-card img:hover {
+      transform: scale(1.22);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Library Book Carousel (7-Cover Display)</h2>
+
+  <div class="upload-container">
+    <label for="excelFile"><strong>Upload Excel File (.xlsx / .xls):</strong></label><br><br>
+    <input type="file" id="excelFile" accept=".xlsx, .xls" />
+    <div id="status"></div>
+    <button id="downloadBtn" class="download-btn" style="display: none;">Download Updated Excel</button>
+  </div>
+
+  <div class="carousel-wrapper" id="carouselWrapper">
+    <div class="carousel-track" id="carouselTrack"></div>
+  </div>
+
+  <script>
+    // Set your library's Syndetics client code here (e.g., 'primo')
+    const CLIENT_CODE = 'primo';
+    
+    let carouselInterval = null;
+    let currentIndex = 0;
+    let totalItems = 0;
+    let processedRowsData = []; // Stores the modified rows with img_url for export
+
+    // Helper: Pre-checks if an image URL returns a valid image (filters out Syndetics 1x1 blank GIFs)
+    function checkImageExists(url) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          if (img.naturalWidth > 1 && img.naturalHeight > 1) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        };
+        img.onerror = () => resolve(false);
+        img.src = url;
+      });
+    }
+
+    document.getElementById('excelFile').addEventListener('change', handleFileUpload);
+    document.getElementById('downloadBtn').addEventListener('click', downloadUpdatedExcel);
+
+    async function handleFileUpload(event) {
+      const file = event.target.files[0];
+      const status = document.getElementById('status');
+      const track = document.getElementById('carouselTrack');
+      const wrapper = document.getElementById('carouselWrapper');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      if (!file) return;
+
+      // Reset state
+      stopCarousel();
+      currentIndex = 0;
+      track.innerHTML = '';
+      wrapper.style.display = 'none';
+      downloadBtn.style.display = 'none';
+      status.textContent = 'Reading Excel file...';
+
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const rows = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+
+          status.textContent = 'Checking ISBNs and loading cover images...';
+
+          const validCovers = [];
+          processedRowsData = rows; // Store for global access when downloading
+
+          // Process each row/title from Excel file
+          for (let index = 0; index < processedRowsData.length; index++) {
+            const row = processedRowsData[index];
+            
+            // Set default empty string for the new img_url column
+            row['img_url'] = '';
+
+            // Find ISBN column (case-insensitive)
+            const isbnKey = Object.keys(row).find(k => k.trim().toUpperCase() === 'ISBN');
+            const rawIsbnCell = isbnKey ? String(row[isbnKey]) : '';
+
+            if (!rawIsbnCell.trim()) continue;
+
+            // Split ISBNs in the cell by semicolon, comma, or space
+            const isbns = rawIsbnCell.split(/[;,]+/).map(s => s.trim().replace(/[^0-9X]/gi, '')).filter(s => s.length >= 10);
+
+            // Sequential check: Find FIRST valid cover image for this title
+            for (const cleanIsbn of isbns) {
+              const coverUrl = `https://www.syndetics.com/index.aspx?isbn=${cleanIsbn}/LC.GIF&client=${CLIENT_CODE}&type=xw12`;
+              const exists = await checkImageExists(coverUrl);
+
+              if (exists) {
+                // Store valid URL in the dataset for Excel download
+                row['img_url'] = coverUrl;
+                validCovers.push({ isbn: cleanIsbn, url: coverUrl });
+                break; // Move to the next title once a cover is matched
+              }
+            }
+          }
+
+          // Show the download button regardless of carousel items (if rows exist)
+          downloadBtn.style.display = 'inline-block';
+
+          if (validCovers.length === 0) {
+            status.textContent = 'No valid book cover images were found, but the dataset is ready to download.';
+            return;
+          }
+
+          status.textContent = `Loaded ${validCovers.length} book cover(s). Starting carousel...`;
+          wrapper.style.display = 'block';
+          totalItems = validCovers.length;
+
+          // Render cover image cards into the slider track
+          validCovers.forEach((item) => {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            card.innerHTML = `<img src="${item.url}" alt="Book Cover" />`;
+            track.appendChild(card);
+          });
+
+          // Setup hover events to pause/resume auto-rotation
+          wrapper.onmouseenter = stopCarousel;
+          wrapper.onmouseleave = startCarousel;
+
+          // Start rotation loop
+          startCarousel();
+
+        } catch (err) {
+          console.error(err);
+          status.textContent = 'Error parsing Excel file. Please ensure it is a valid format.';
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+
+    function downloadUpdatedExcel() {
+      if (!processedRowsData || processedRowsData.length === 0) return;
+
+      // Convert updated row objects back into a Worksheet
+      const newWorksheet = XLSX.utils.json_to_sheet(processedRowsData);
+      const newWorkbook = XLSX.utils.book_new();
+      
+      XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, "Updated Books");
+
+      // Export file to client download
+      XLSX.writeFile(newWorkbook, 'updated_library_books.xlsx');
+    }
+
+    function rotateCarousel() {
+      const track = document.getElementById('carouselTrack');
+      if (totalItems <= 7) return; // No rotation needed if 7 or fewer images exist
+
+      // Shift one position at a time; wrap back to start at the end
+      currentIndex = (currentIndex + 1) % (totalItems - 6);
+
+      // Width of one item + gap percentage shift
+      const shiftPercent = currentIndex * (100 / 7 + (15 / 12)); 
+      track.style.transform = `translateX(-${shiftPercent}%)`;
+    }
+
+    function startCarousel() {
+      if (carouselInterval || totalItems <= 7) return;
+      carouselInterval = setInterval(rotateCarousel, 2000); // Rotates every 2 seconds
+    }
+
+    function stopCarousel() {
+      if (carouselInterval) {
+        clearInterval(carouselInterval);
+        carouselInterval = null;
+      }
+    }
+  </script>
+
+</body>
+</html>
